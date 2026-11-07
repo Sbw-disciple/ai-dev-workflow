@@ -1,6 +1,6 @@
 # AI 开发工作流
 
-> 一套规格驱动的 AI 编程流程：先想清楚，再写下来，然后按小增量做出来，每一步都留下可验收的证据。
+> **AI 工作开发** —— 一套规格驱动的 AI 编程流程：先想清楚，再写下来，然后按小增量做出来，每一步都留下可验收的证据。
 
 适用于任何用 AI 写代码的场景，不绑定特定编辑器、插件或模型。
 
@@ -28,13 +28,13 @@ Skill 目录位于用户主目录下的 `.workbuddy/skills/`（旧版 CodeBuddy 
 macOS / Linux：
 
 ```bash
-git clone git@github.com:Sbw-disciple/AI工作开发.git ~/.workbuddy/skills/ai-dev-workflow
+git clone git@github.com:Sbw-disciple/ai-dev-workflow.git ~/.workbuddy/skills/ai-dev-workflow
 ```
 
 Windows PowerShell：
 
 ```powershell
-git clone git@github.com:Sbw-disciple/AI工作开发.git "$env:USERPROFILE\.workbuddy\skills\ai-dev-workflow"
+git clone git@github.com:Sbw-disciple/ai-dev-workflow.git "$env:USERPROFILE\.workbuddy\skills\ai-dev-workflow"
 ```
 
 手动安装：把本仓库整个目录复制到 `~/.workbuddy/skills/ai-dev-workflow`，重启客户端，在技能列表里确认已加载。
