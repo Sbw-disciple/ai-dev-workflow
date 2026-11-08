@@ -237,7 +237,8 @@ def main() -> int:
     date = now.date().isoformat()
     stamp = now.strftime("%Y-%m-%d %H:%M:%S %z") or date
     ai.mkdir(exist_ok=True)
-    (ai / "reports").mkdir(exist_ok=True)
+    for sub in ("reports", "archive"):
+        (ai / sub).mkdir(exist_ok=True)
 
     spec = (CONTEXT_LITE if args.lite else CONTEXT_FULL).format(date=date)
     payload = {
@@ -252,10 +253,11 @@ def main() -> int:
         mark = "[+]" if write(path, content) == "create" else "[=]"
         print(f"{mark} {path.relative_to(root)}")
 
-    keep = ai / "reports" / ".gitkeep"
-    if not keep.exists():
-        keep.write_text("", encoding="utf-8")
-        print(f"[+] {keep.relative_to(root)}")
+    for sub in ("reports", "archive"):
+        keep = ai / sub / ".gitkeep"
+        if not keep.exists():
+            keep.write_text("", encoding="utf-8")
+            print(f"[+] {keep.relative_to(root)}")
 
     print("\n下一步：填 CONTEXT.md 的范围与验收标准，确认后再拆 tickets。")
     return 0
