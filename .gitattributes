@@ -1,0 +1,8 @@
+# 统一换行，避免 Windows / macOS 贡献出大量无意义 diff
+* text=auto
+
+*.md   text eol=lf
+*.py   text eol=lf
+*.svg  text eol=lf
+*.ps1  text eol=crlf
+*.sh   text eol=lf

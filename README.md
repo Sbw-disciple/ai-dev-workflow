@@ -1,137 +1,168 @@
 # AI 开发工作流
 
-> **AI 工作开发** —— 一套规格驱动的 AI 编程流程：先想清楚，再写下来，然后按小增量做出来，每一步都留下可验收的证据。
+> **AI 工作开发** —— 一套规格驱动的 AI 编程流程，附前后端、Agent、移动端代码标准。
 
-适用于任何用 AI 写代码的场景，不绑定特定编辑器、插件或模型。
+流程管「什么时候该写」，标准管「写成什么样」。两件都做到，AI 才从「写得快」变成「写得对」。
 
 ![工作流框架](assets/workflow.svg)
 
-## 它解决什么
-
-AI 写代码很快，但「快」不等于「对」。这套流程针对四种几乎人人都会遇到的失效：
-
-| 失效 | 表现 | 解法 |
-| --- | --- | --- |
-| 对话一长就忘 | 上下文被压缩，前面定过的约束慢慢丢失，越写越偏 | 规格外置到 `.ai/CONTEXT.md` |
-| 自己审自己 | 方案是它出的，审查也是它做的，结论必然「合理」 | 审查换一个没参与过的立场 |
-| 测试变成背书 | 先写代码再补测试，测试只是给现有行为拍张照 | 先定判据，跑红再实现 |
-| 一次改太多 | 一个提交几十个文件，出问题无法定位，不敢回滚 | 一张 ticket 一次改动 |
-
-一句话：**该记住的写进文件，该质疑的换个人来质疑，该验证的变成能跑的东西，该交付的切成小块。**
-
-## 安装
-
-### WorkBuddy / CodeBuddy
-
-Skill 目录位于用户主目录下的 `.workbuddy/skills/`（旧版 CodeBuddy 为 `.codebuddy/skills/`）。
-
-macOS / Linux：
+## 60 秒上手
 
 ```bash
+# 1. 安装
 git clone git@github.com:Sbw-disciple/ai-dev-workflow.git ~/.workbuddy/skills/ai-dev-workflow
+
+# 2. 在任意项目里初始化记录目录
+python ~/.workbuddy/skills/ai-dev-workflow/scripts/init_workspace.py <你的项目>
+
+# 3. 直接说需求，加一句触发词
+#    「给记录页加按日期筛选，按流程来」
 ```
 
-Windows PowerShell：
+不需要配置，不需要改代码，不需要记命令。触发词：`按流程来` / `先写规格` / `拆一下任务` / `review 一下`。
 
-```powershell
-git clone git@github.com:Sbw-disciple/ai-dev-workflow.git "$env:USERPROFILE\.workbuddy\skills\ai-dev-workflow"
-```
+## 它解决什么
 
-手动安装：把本仓库整个目录复制到 `~/.workbuddy/skills/ai-dev-workflow`，重启客户端，在技能列表里确认已加载。
+| 失效 | 表现 | 解法 |
+|---|---|---|
+| 对话一长就忘 | 上下文被压缩，前面定过的约束慢慢丢失 | 规格外置到 `.ai/CONTEXT.md` |
+| 自己审自己 | 方案它出，审查它做，结论必然「合理」 | 审查换一个没参与过的立场 |
+| 测试变成背书 | 先写代码再补测试，测试只是给现有行为拍照 | 先定判据，跑红再实现 |
+| 一次改太多 | 一个提交几十个文件，出问题无法定位 | 一张 ticket 一次改动 |
+| 代码对了但不像这个项目 | 风格、分层、错误处理各写一套 | 动手前读项目，按技术栈加载标准 |
+| 不知道哪里没验证 | 「都跑过了」，其实一半没跑 | 报告里强制写「未执行/未通过的检查」 |
 
-### 其他 AI 编程工具
+## 两部分
 
-没有 skill 机制也能用。把 `SKILL.md` 作为项目规则文件引入：
-
-- Claude Code：放到项目根的 `CLAUDE.md`
-- Cursor：放到 `.cursor/rules/`
-- 其他工具：作为系统提示的一部分，或每次对话开头发给模型
-
-流程本身不依赖任何工具特性，只要求模型能读写项目文件。
-
-## 用法
-
-触发方式：直接描述你要做的事，或说出关键词。
+### 过程：七道闸门
 
 ```
-我要给记录页加一个按日期筛选的功能
-按流程来，先写规格
-帮我拆一下这个需求
-review 一下这次的改动
-```
-
-会触发流程的场景：新功能、跨 3 个以上文件的改动、重构、清理死代码、修复杂 bug。
-
-不会触发（直接做）：改文案、调颜色、改一个数值、单文件 20 行以内的明确改动。
-
-## 七个阶段
-
-```
-阶段 0  读项目            静默执行，不问用户
-阶段 1  澄清              一次一个问题，每个问题自带建议答案
-阶段 2  方案 + 对抗审查    换视角挑错，合并后再给用户看   ── 确认点 1
-阶段 3  写规格 .ai/CONTEXT.md                        ── 确认点 2
+阶段 0  读项目            静默，只读文件
+阶段 1  澄清              一次一问，每问自带建议答案
+阶段 2  方案 + 对抗审查    换视角挑错，合并后再给人看   ── Gate 1
+阶段 3  写规格 .ai/CONTEXT.md                        ── Gate 2
 阶段 4  拆 tickets .ai/tickets.md
 阶段 5  逐张实现           先判据，后代码
 阶段 6  两路评审 .ai/review.md
-阶段 7  回归验收           按规格逐条过
+阶段 7  回归验收           按规格逐条过 + 完成报告
 ```
 
 人的介入点只有两个：确认方案、确认规格。其余交给模型，但每一步都有文件留痕。
+
+### 标准：按技术栈加载
+
+| 规范 | 覆盖 |
+|---|---|
+| `standards/shared.md` | 优先级、变更范围、依赖、错误处理、编码与时区金额、注释、八条红线、工作记录 |
+| `standards/frontend.md` | 目录职责、组件、类型、请求与状态、表单、样式与可访问性、安全、性能、测试 |
+| `standards/backend-agent.md` | 分层、API 与 DTO、认证授权、事务、并发重试、日志、Agent 工具安全、提示注入、评估 |
+| `standards/mobile.md` | 生命周期、长列表、路由、权限、离线、持久化、适配、线程 |
+| `standards/examples.md` | 四个对照示例：API 边界、异步状态、分层、工具调用 |
+| `checklists.md` | 八段清单：开始前、方案、实现、前端、后端、Agent、移动端、完成前 |
+
+**不要一次全读。** 改文案只读 `shared.md`（一份，约 110 行）；新功能才加载三四份。全塞进上下文会稀释注意力，重点反而抓不住。
+
+## 按任务形状决定深度
+
+| 任务 | 加载 | 流程 |
+|---|---|---|
+| 改文案 / 调颜色 / 改数值 | `shared.md` | 不走 |
+| 单文件 20 行内 | `shared.md` | 不走 |
+| 新功能 / 跨 3+ 文件 / 重构 | `shared` + 技术栈 + `process/` | 0→7 |
+| 全栈 | `shared` + `frontend` + `backend-agent` + `checklists` | 0→7 |
+| 只要审查 | `checklists` + 技术栈 | 直接进阶段 6 |
+| 鸿蒙 / 小程序 / RN | `shared` + `mobile` + `checklists` | 0→7 |
 
 ## 产物
 
 ```
 项目根/
 └── .ai/
-    ├── CONTEXT.md    规格：目标、范围、验收标准、约束、子任务
-    ├── tickets.md    子任务清单与状态
-    └── review.md     两路评审记录与回归结果
+    ├── CONTEXT.md      规格：目标、范围、验收标准、约束、子任务
+    ├── tickets.md      子任务清单与状态
+    ├── review.md       两路评审记录与回归结果
+    ├── operations.md   操作日志：时间、操作、目标、原因、结果、恢复方式
+    └── reports/        完成报告，一次任务一份
 ```
 
-这三个文件应当提交进项目仓库，它们是团队共享的决策记录。
-
-初始化：
+五个都提交进仓库——它们是团队共享的决策记录，不是临时文件。初始化：
 
 ```bash
-python3 scripts/init_workspace.py .   # Windows 用 python
+python scripts/init_workspace.py .            # 完整版
+python scripts/init_workspace.py . --lite     # 只建精简规格，适合小需求
+python scripts/init_workspace.py . --check    # 只检查不写入
 ```
 
-脚本会在当前目录生成 `.ai/` 和三个模板文件，已存在的文件默认跳过。加 `--lite` 只生成精简版规格，适合小需求。
+已存在的文件默认跳过，重复跑不会覆盖你的内容。
 
 ## 没有测试框架怎么办
 
-移动端、小程序、桌面端项目常常没有可用的单测。不硬套 TDD，但要保住它想要的东西——可执行的验收判据：
+移动端、小程序、桌面端常常没有可跑的单测。不硬套 TDD，但要保住它想要的东西——**可执行的验收判据**：
 
-- 纯逻辑（计算、换算、解析、状态机）抽成不依赖 UI 的函数，这部分必须有测试或验证脚本
-- UI 与交互用验收判据代替：进入页面看到什么、点击后发生什么、异常输入如何提示
-- 每次只回归受影响页面，控制手动成本
+- 纯逻辑（计算、换算、解析、状态机）抽成不依赖 UI 的函数，必须有测试或验证脚本
+- UI 与交互用验收判据代替：进入看到什么、点击后什么变化、异常输入怎么提示
+- 每次只回归受影响页面，控制手测成本
 
-写不出判据的地方，往往就是需求没想清楚的地方，回到澄清阶段。
+写不出判据的地方，通常就是需求没想清楚。
+
+## 验证脚本
+
+```powershell
+# 前端：按锁文件识别 npm/pnpm/Yarn/Bun，再从 package.json 找格式化、Lint、类型、测试、构建
+./scripts/verify-frontend.ps1 -ProjectRoot "<前端根目录>"
+
+# 后端：识别 Maven、Gradle、Python、Go、Rust、.NET、Node
+./scripts/verify-backend.ps1 -ProjectRoot "<后端根目录>"
+
+# 追加操作日志（会阻止路径逃出项目根目录）
+./scripts/write-worklog.ps1 -ProjectRoot "<项目根>" -Operation "..." -Target "..." -Reason "..." -Result "..."
+```
+
+脚本只识别并执行项目**已有**的命令，不安装依赖，不自动 `--fix`。项目有 CI 时以 CI 命令为准。
+
+## 安装到别处
+
+| 环境 | 目录 |
+|---|---|
+| WorkBuddy | `~/.workbuddy/skills/ai-dev-workflow` |
+| Codex | `~/.codex/skills/ai-dev-workflow` |
+| 手动 | 把仓库整个目录复制过去，重启客户端 |
+
+没有 skill 机制的工具也能用：把 `SKILL.md` 当项目规则引入（Claude Code 放 `CLAUDE.md`，Cursor 放 `.cursor/rules/`）。流程不依赖任何工具特性，只要求模型能读写文件。
 
 ## 目录结构
 
 ```
 ai-dev-workflow/
-├── SKILL.md                      技能主文件，模型加载的入口
+├── SKILL.md                      入口：路由 + 七阶段 + 八条红线
 ├── README.md
-├── LICENSE
-├── CHANGELOG.md
-├── assets/
-│   └── workflow.svg              流程框架图
+├── CHANGELOG.md  LICENSE  .gitignore
+├── assets/workflow.svg
 ├── references/
-│   ├── spec-template.md          规格模板
-│   ├── tickets-template.md       任务拆分模板与粒度示例
-│   ├── review-checklist.md       两路评审清单
-│   ├── antipatterns.md           五种误用
-│   └── origin.md                 来源与改造说明
+│   ├── process/                  过程层
+│   │   ├── spec-template.md
+│   │   ├── tickets-template.md
+│   │   ├── review-checklist.md
+│   │   ├── antipatterns.md
+│   │   └── origin.md
+│   ├── standards/                标准层
+│   │   ├── shared.md
+│   │   ├── frontend.md
+│   │   ├── backend-agent.md
+│   │   ├── mobile.md
+│   │   └── examples.md
+│   ├── checklists.md
+│   └── report-template.md
 └── scripts/
-    └── init_workspace.py         初始化 .ai/ 目录
+    ├── init_workspace.py
+    ├── verify-frontend.ps1
+    ├── verify-backend.ps1
+    └── write-worklog.ps1
 ```
 
 ## 来源
 
-流程骨架来自一位开发者公开分享的九步实践（`/grill-me` → `/to-spec` → `/to-tickets` → `/tdd` → `/code-review`）。本仓库剥离了与特定插件的绑定，改写为七个阶段，并补充了无测试框架时的降级方案。详见 [references/origin.md](references/origin.md)。
+过程骨架来自一位开发者公开分享的九步实践（`/grill-me` → `/to-spec` → `/to-tickets` → `/tdd` → `/code-review`），代码标准来自 [lengchang-haoyuan](https://github.com/lengchang-haoyuan/frontend-backend-code-standards-Skill-) 的规范集。本仓库剥离了与工具的绑定，合成七阶段流程 + 分层标准，并补充了移动端与无测试框架的降级方案。详见 [references/process/origin.md](references/process/origin.md)。
 
 ## License
 
