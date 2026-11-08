@@ -4,3 +4,6 @@ __pycache__/
 Thumbs.db
 .idea/
 .vscode/
+
+# 本仓库自己跑流程时的产物，不随技能分发
+.ai/

@@ -20,7 +20,21 @@ from pathlib import Path
 
 TASK_TEMPLATE = """# <任务名>
 
-一句话：<这次要达成什么>
+一句话目标：<只写结果，不写手段>
+
+## 范围
+
+**必须有**
+
+- <少了这条就算没做成>
+
+**明确不做**
+
+- <这次明确不碰的>
+
+**待定**
+
+- 无
 
 ## 怎么算做完
 
@@ -30,13 +44,15 @@ TASK_TEMPLATE = """# <任务名>
 
 ## 分几步
 
-- [ ] 1.1 <改哪个文件 / 做什么>
-- [ ] 1.2 <改哪个文件 / 做什么>
-- [ ] 1.3 <改哪个文件 / 做什么>
+- [ ] 1.1 <做什么>（完成定义：<做完怎么判断>）
+- [ ] 1.2 <做什么>（完成定义：<做完怎么判断>）
+- [ ] 1.3 <做什么>（完成定义：<做完怎么判断>）
 
-## 不做什么
+## 变更
 
-- <范围外的事，避免做着做着跑偏>
+| 时间 | 改了什么 | 为什么 | 谁同意 |
+|---|---|---|---|
+| — | — | — | — |
 
 ## 放弃条件
 
@@ -59,6 +75,11 @@ REPORT_TEMPLATE = """# 完成报告 · <任务名>
 | AC-2 | 未验 | — |
 | AC-3 | 未验 | — |
 
+## 反向检查
+
+- 该做没做的：<无 / 列出>
+- 顺手多做的：<无 / 列出>
+
 ## 复盘
 
 - 哪个判断错了：<哪个假设被证伪>
@@ -78,10 +99,13 @@ AC_LINE = re.compile(r"^-\s*\[[ xX]\]\s*AC-(\d+)(.*)$", re.MULTILINE)
 STEP_LINE = re.compile(r"^-\s*\[([ xX])\]\s*(\d+\.\d+)(.*)$", re.MULTILINE)
 REPORT_ROW = re.compile(r"^\|\s*AC-(\d+)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|", re.MULTILINE)
 SECTION_HEAD = re.compile(r"^##\s+(.+?)\s*$", re.MULTILINE)
+BOLD_HEAD = re.compile(r"^\*\*(.+?)\*\*$")
 PLACEHOLDER = re.compile(r"^[\s\-|#]*<[^<>\n]{1,40}>")
+EMPTY_ITEM = re.compile(r"^-\s*(无|没有|none|None|—|-)?\s*$")
 
 VALID_VERDICT = {"通过", "不通过", "未验"}
 MIN_AC = 3
+SCOPE_BLOCKS = ("必须有", "明确不做", "待定")
 REVIEW_KEYS = ("判断", "下次", "rules")
 
 
@@ -93,6 +117,24 @@ def section(text: str, title: str) -> list[str]:
             end = heads[i + 1].start() if i + 1 < len(heads) else len(text)
             return text[start:end].splitlines()
     return []
+
+
+def bold_block(text: str, name: str) -> tuple[bool, list[str]]:
+    """取出 **xxx** 下的行，返回 (是否存在, 行列表)。"""
+    found, out = False, []
+    inside = False
+    for ln in text.splitlines():
+        m = BOLD_HEAD.match(ln.strip())
+        if m:
+            inside = m.group(1).strip() == name
+            found = found or inside
+            continue
+        if inside:
+            if ln.startswith("##"):
+                inside = False
+                continue
+            out.append(ln)
+    return found, out
 
 
 def placeholders(text: str) -> list[str]:
@@ -109,7 +151,7 @@ def init(root: Path) -> int:
         else:
             p.write_text(body, encoding="utf-8", newline="\n")
             print(f"[new ] {p.relative_to(root)}")
-    print("\n下一步：填 .ai/TASK.md 的「怎么算做完」和「分几步」，再动代码。")
+    print("\n下一步：填 .ai/TASK.md 的「目标」「范围」「怎么算做完」「分几步」，再动代码。")
     return 0
 
 
@@ -134,15 +176,25 @@ def check(root: Path) -> int:
     holes = placeholders(task)
     if holes:
         problems.append(f"TASK.md 还有 {len(holes)} 处占位符没填，例如：{holes[0]}")
+
+    missing_scope = [b for b in SCOPE_BLOCKS if not bold_block(task, b)[0]]
+    if missing_scope:
+        problems.append("「范围」缺这些节：" + "、".join(missing_scope))
+    else:
+        pending = [ln.strip() for ln in bold_block(task, "待定")[1]
+                   if ln.strip().startswith("-") and not EMPTY_ITEM.match(ln.strip())]
+        if pending:
+            problems.append(f"「待定」还有 {len(pending)} 项没定：{pending[0]}")
+
     if len(steps) < 2:
         notes.append(f"只拆了 {len(steps)} 步，建议 2–6 步")
     if not any(ln.strip().strip("-").strip() for ln in section(task, "放弃条件")):
         notes.append("没写放弃条件——出了问题就没有止损线")
-    print(f"[ok] TASK.md：{len(acs)} 条验收，{len(steps)} 步")
+    print(f"[ok] TASK.md：{len(acs)} 条验收，{len(steps)} 步，范围三节齐")
 
     if not report_p.exists():
         if undone:
-            notes.append(f"还有 {len(undone)} 步没做（1.1 之类），正常")
+            notes.append(f"还有 {len(undone)} 步没做，正常")
         for msg in problems:
             print(f"[x] {msg}")
         for msg in notes:
@@ -165,6 +217,9 @@ def check(root: Path) -> int:
 
     if undone:
         problems.append(f"还有 {len(undone)} 步没打勾就写了报告：{undone[0]}")
+
+    if not any(ln.strip() for ln in section(report, "反向检查")):
+        problems.append("报告缺「反向检查」——该做没做、顺手多做的，各写一行")
 
     review = "\n".join(section(report, "复盘"))
     lack = [k for k in REVIEW_KEYS if k not in review]
