@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.7.1 — 2026-11-08
+
+把「SKILL.md 该多长」从拍数字改成有依据的预算。
+
+### 变更
+
+- `references/rules.md` 新增第 9 节「写 skill、改 skill 时」
+- 补上 0.7.0 复盘欠的那条：清单要成对写（防越界配防缺失）
+- 给出三档预算：软上限 170 行（官方样本中位 138 × 1.25）、警戒 250 行（p70 = 253）、硬顶 500 行（官方建议）
+- 给出 references 的两条硬规矩：只能一层深；单份超 100 行要加目录
+
+### 依据
+
+`anthropics/skills` 全部 20 个 SKILL.md 实测：最小 6 行、中位 138、p70 253、p90 477、最大 616。
+官方《Skill authoring best practices》：Keep the SKILL.md body under 500 lines。
+
 ## 0.7.0 — 2026-11-08
 
 补上「目标」与「范围」两段，并加一条落盘前的预览规则。

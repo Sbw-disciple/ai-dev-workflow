@@ -109,8 +109,8 @@ python ~/.workbuddy/skills/ai-dev-workflow/scripts/task.py . --check
 ## 目录
 
 ```
-SKILL.md                 主文件，130 行，读完就够
-references/rules.md      编码、提交、Windows 坑
+SKILL.md                 主文件，131 行，读完就够
+references/rules.md      编码、提交、Windows 坑、SKILL.md 的预算
 references/templates.md  两个模板 + 填满的样例 + 六种写坏的写法
 scripts/task.py          建骨架 / 自检
 ```
