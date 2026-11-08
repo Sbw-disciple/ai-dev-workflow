@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.5.0 — 2026-11-08
+
+按「一个人用」重做，大幅收缩。
+
+### 变更
+
+- 四档压成三档：随手 / 小活 / 正经。去掉 L0–L3 编号，改用「多大事」这类直觉判断
+- 七阶段压成三阶段：想清楚 / 做 / 验
+- 产物从五件套压成两个文件：`TASK.md`（验收标准）+ `REPORT.md`（证据）
+- 八条红线剪成五条，只留一个人真会踩的：删文件、装依赖改配置、改别人会用的东西、碰别人仓库、没验证就交付
+- 新增 `scripts/task.py --check`：检查验收标准数量、占位符、报告缺项、无证据的「通过」、没写原因的「未验」。退出码 0/1/2
+- `references/` 从 12 份压成 2 份：`rules.md`（编码、提交、Windows 坑）、`templates.md`（模板与样例）
+- README 重写，去掉流程图与团队相关表述
+
+### 移除
+
+- `references/process/`（5 份）、`references/standards/`（4 份）、`checklists.md`、`report-template.md`
+- `scripts/init_workspace.py`、`verify-frontend.ps1`、`verify-backend.ps1`、`write-worklog.ps1`
+- `assets/workflow.svg`（画的是七阶段，已不适用）
+
+删掉的内容都在 `v0.4.1` 标签里，需要时 `git show v0.4.1:<路径>` 取回。
+
+### 数字
+
+23 个文件 / 文档 1554 行 → 9 个文件 / 文档 484 行。
+
 ## 0.4.1 — 2026-11-08
 
 补上 L2 的确认点。
