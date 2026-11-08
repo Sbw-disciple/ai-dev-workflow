@@ -87,6 +87,19 @@
 └── REPORT.md   改了什么 / 验收证据 / 反向检查 / 复盘 / 没验的
 ```
 
+## 续跑时先读什么
+
+开工先看项目记忆顶部的「锚定」区块：**目标 / 已锁死 / 已排除**。再看 `.ai/TASK.md` 哪一步没打勾。
+
+中断或交接时，在交接文件末尾补两行：
+
+```
+依赖状态：A 已冻结 → B 可开始；C 等 B
+全局对齐：还对不对得上目标 / 偏差是什么
+```
+
+只写这两行，不建 `DEPS.md`、不建 `contracts/`、不加脚本。做成流程就变仪式，写成一行字才是习惯。
+
 ## 60 秒上手
 
 ```bash
@@ -136,7 +149,7 @@ python ~/.workbuddy/skills/ai-dev-workflow/scripts/task.py . --check
 ## 目录
 
 ```
-SKILL.md                 主文件，136 行，读完就够
+SKILL.md                 主文件，138 行，读完就够
 references/rules.md      编码、提交、Windows 坑、SKILL.md 的预算
 references/templates.md  两个模板 + 填满的样例 + 六种写坏的写法
 scripts/task.py          建骨架 / 自检（0.8.0）
