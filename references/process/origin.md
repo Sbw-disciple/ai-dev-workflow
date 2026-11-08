@@ -4,7 +4,7 @@
 
 ## 来源一：过程骨架
 
-来自一位抖音开发者（用户 414094）分享的个人实践《我的 AI 日常开发工作流》，原文以三页图文记录了九个步骤，配套 VSCode 的 Claude Code 插件与一组自定义 Skills（`/grill-me`、`/to-spec`、`/to-tickets`、`/tdd`、`/code-review`）。
+来自一位抖音开发者（用户 414094）分享的个人实践《我的 AI 日常开发工作流》，原文以三页图文记录了九个步骤，配套一组自定义命令（`/grill-me`、`/to-spec`、`/to-tickets`、`/tdd`、`/code-review`）。
 
 本仓库把与具体工具绑定的部分剥离，保留流程骨架，改成任何能读写文件的 AI 环境都能执行的七个阶段。
 
@@ -36,7 +36,7 @@
 
 ## 来源二：代码标准
 
-来自 [lengchang-haoyuan/frontend-backend-code-standards-Skill-](https://github.com/lengchang-haoyuan/frontend-backend-code-standards-Skill-)（单次提交 `525d2ee`，2026-08-23）。原仓库 13 个文件、约 1006 行 Markdown 加 333 行 PowerShell，面向 Codex：依赖 `~/.codex/skills` 路径、`$skill` 调用语法与 `agents/openai.yaml` 元数据。
+来自 [lengchang-haoyuan/frontend-backend-code-standards-Skill-](https://github.com/lengchang-haoyuan/frontend-backend-code-standards-Skill-)（单次提交 `525d2ee`，2026-08-23）。原仓库 13 个文件、约 1006 行 Markdown 加 333 行 PowerShell，原本绑定某个特定客户端的技能目录与调用语法，另带一个 `agents/openai.yaml` 元数据文件。
 
 它的强项是工程底线写得硬：分层职责、鉴权与服务端授权、事务边界、并发不变量、错误语义、Agent 的工具权限与提示注入，以及两个能真跑的验证脚本。缺的是过程——不澄清、不拆解、不评审、不回归。
 
@@ -46,9 +46,8 @@
 
 | 原始 | 本仓库 | 为什么 |
 |---|---|---|
-| 绑定 Codex（`.codex` 路径、`$skill` 语法、英文 default_prompt） | 去掉路径与语法绑定，`agents/openai.yaml` 不再携带 | 换环境就得改一遍，等于没通用 |
+| 绑定特定客户端（私有目录、调用语法、英文 default_prompt） | 去掉路径与语法绑定，`agents/openai.yaml` 不再携带 | 换环境就得改一遍，等于没通用 |
 | 7 份 reference，前后端各含示例 | 合并为 5 份：`shared` / `frontend` / `backend-agent` / `mobile` / `examples` | 示例单独成篇，按需才读，减少常驻加载 |
-| 无移动端 | 新增 `standards/mobile.md` | 鸿蒙、RN、小程序是这套东西最大的盲区 |
 | 产物写 `docs/ai-worklogs/` | 并入 `.ai/operations.md` 与 `.ai/reports/` | 一个项目两套记录目录，必有一套烂掉 |
 | 无版本、无变更记录、无许可证 | MIT + CHANGELOG + 语义化版本 | 别人敢用，也敢改 |
 

@@ -1,7 +1,7 @@
 ---
 name: ai-dev-workflow
-description: "规格驱动的 AI 开发工作流，加前后端、Agent、移动端代码标准。按改动大小分四档（直达 / 快改 / 轻量 / 完整），每档走不同深度的闸门，产物落在项目 .ai/ 目录；写代码时按技术栈加载对应规范。隔天回来能读 .ai/ 接着做。当用户要开发新功能、跨文件改动、重构、清理死代码、修复杂 bug、做代码审查，或提到「按流程来」「先写规格」「拆任务」「code review」「TDD」「代码规范」「接着上次做」「别让 AI 跑偏」时使用。关键词：开发流程、工作流、规格、spec、CONTEXT.md、拆任务、tickets、TDD、代码审查、code review、需求澄清、小增量、代码规范、前端规范、后端规范、Agent 规范、移动端规范、ArkTS、安全审查、完成报告、续做、继续上次"
-version: "0.3.0"
+description: "规格驱动的 AI 开发工作流，加前后端与 Agent 代码标准。按改动大小分四档（直达 / 快改 / 轻量 / 完整），每档走不同深度的闸门，产物落在项目 .ai/ 目录；写代码时按技术栈加载对应规范。隔天回来能读 .ai/ 接着做。当用户要开发新功能、跨文件改动、重构、清理死代码、修复杂 bug、做代码审查，或提到「按流程来」「先写规格」「拆任务」「code review」「TDD」「代码规范」「接着上次做」「别让 AI 跑偏」时使用。关键词：开发流程、工作流、规格、spec、CONTEXT.md、拆任务、tickets、TDD、代码审查、code review、需求澄清、小增量、代码规范、前端规范、后端规范、Agent 规范、安全审查、完成报告、续做、继续上次"
+version: "0.4.0"
 author: "苏博文"
 created: "2026-11-07"
 updated: "2026-11-08"
@@ -12,6 +12,8 @@ updated: "2026-11-08"
 > 先用闸门把「做什么」定死，再按技术栈把「怎么写」定死。轻活走轻档，别拿七阶段去改一个文案。
 
 文中 `references/...`、`scripts/...` 相对于**本 skill 安装目录**。
+
+适用环境：**WorkBuddy + DeepSeek**。不依赖其他客户端的目录约定、调用语法或元数据文件。
 
 ## 0. 每次任务先做两件事
 
@@ -109,12 +111,11 @@ python <SKILL_DIR>/scripts/init_workspace.py <项目目录> --check    # 只检�
 | 通用底线：优先级、范围、依赖、错误、编码、注释 | `references/standards/shared.md` |
 | 前端 | `references/standards/frontend.md` |
 | 后端与 Agent | `references/standards/backend-agent.md` |
-| 鸿蒙 / ArkTS / 小程序 / RN / Flutter | `references/standards/mobile.md` |
 | 想看正面对照 | `references/standards/examples.md` |
 | 逐项打勾 | `references/checklists.md` |
 | 完成报告 | `references/report-template.md` |
 
-技术栈读不出来就看构建文件：`package.json` → 前端；`pom.xml` / `build.gradle` / `pyproject.toml` / `go.mod` → 后端；`build-profile.json5` / `module.json5` → 移动端。
+技术栈读不出来就看构建文件：`package.json` → 前端；`pom.xml` / `build.gradle` / `pyproject.toml` / `go.mod` → 后端。
 
 ## 5. 一句话
 

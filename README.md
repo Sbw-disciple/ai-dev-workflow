@@ -1,6 +1,6 @@
 # AI 开发工作流
 
-> **AI 工作开发** —— 一套规格驱动的 AI 编程流程，附前后端、Agent、移动端代码标准。
+> **AI 工作开发** —— 一套规格驱动的 AI 编程流程，附前后端与 Agent 代码标准。面向 WorkBuddy + DeepSeek。
 
 流程管「什么时候该写」，标准管「写成什么样」。两件都做到，AI 才从「写得快」变成「写得对」。
 
@@ -56,9 +56,8 @@ python ~/.workbuddy/skills/ai-dev-workflow/scripts/init_workspace.py <你的项�
 | `standards/shared.md` | 优先级、变更范围、依赖、错误处理、编码与时区金额、注释、八条红线、工作记录 |
 | `standards/frontend.md` | 目录职责、组件、类型、请求与状态、表单、样式与可访问性、安全、性能、测试 |
 | `standards/backend-agent.md` | 分层、API 与 DTO、认证授权、事务、并发重试、日志、Agent 工具安全、提示注入、评估 |
-| `standards/mobile.md` | 生命周期、长列表、路由、权限、离线、持久化、适配、线程 |
 | `standards/examples.md` | 四个对照示例：API 边界、异步状态、分层、工具调用 |
-| `checklists.md` | 八段清单：开始前、方案、实现、前端、后端、Agent、移动端、完成前 |
+| `checklists.md` | 七段清单：开始前、方案、实现、前端、后端、Agent、完成前 |
 
 **不要一次全读。** 改文案只读 `shared.md`（一份，约 110 行）；新功能才加载三四份。全塞进上下文会稀释注意力，重点反而抓不住。
 
@@ -114,7 +113,7 @@ python scripts/init_workspace.py . --check    # 只检查不写入
 
 ## 没有测试框架怎么办
 
-移动端、小程序、桌面端常常没有可跑的单测。不硬套 TDD，但要保住它想要的东西——**可执行的验收判据**：
+有些项目常常没有可跑的单测。不硬套 TDD，但要保住它想要的东西——**可执行的验收判据**：
 
 - 纯逻辑（计算、换算、解析、状态机）抽成不依赖 UI 的函数，必须有测试或验证脚本
 - UI 与交互用验收判据代替：进入看到什么、点击后什么变化、异常输入怎么提示
@@ -142,10 +141,9 @@ python scripts/init_workspace.py . --check    # 只检查不写入
 | 环境 | 目录 |
 |---|---|
 | WorkBuddy | `~/.workbuddy/skills/ai-dev-workflow` |
-| Codex | `~/.codex/skills/ai-dev-workflow` |
 | 手动 | 把仓库整个目录复制过去，重启客户端 |
 
-没有 skill 机制的工具也能用：把 `SKILL.md` 当项目规则引入（Claude Code 放 `CLAUDE.md`，Cursor 放 `.cursor/rules/`）。流程不依赖任何工具特性，只要求模型能读写文件。
+只面向 WorkBuddy。把目录放到 `~/.workbuddy/skills/ai-dev-workflow`，重启客户端，在技能列表里确认加载即可。
 
 ## 目录结构
 
@@ -167,7 +165,6 @@ ai-dev-workflow/
 │   │   ├── shared.md
 │   │   ├── frontend.md
 │   │   ├── backend-agent.md
-│   │   ├── mobile.md
 │   │   └── examples.md
 │   ├── checklists.md
 │   └── report-template.md
@@ -180,7 +177,7 @@ ai-dev-workflow/
 
 ## 来源
 
-过程骨架来自一位开发者公开分享的九步实践（`/grill-me` → `/to-spec` → `/to-tickets` → `/tdd` → `/code-review`），代码标准来自 [lengchang-haoyuan](https://github.com/lengchang-haoyuan/frontend-backend-code-standards-Skill-) 的规范集。本仓库剥离了与工具的绑定，合成七阶段流程 + 分层标准，并补充了移动端与无测试框架的降级方案。详见 [references/process/origin.md](references/process/origin.md)。
+过程骨架来自一位开发者公开分享的九步实践（`/grill-me` → `/to-spec` → `/to-tickets` → `/tdd` → `/code-review`），代码标准来自 [lengchang-haoyuan](https://github.com/lengchang-haoyuan/frontend-backend-code-standards-Skill-) 的规范集。本仓库剥离了与工具的绑定，合成七阶段流程 + 分层标准，并补充了无测试框架的降级方案。详见 [references/process/origin.md](references/process/origin.md)。
 
 ## License
 

@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0 — 2026-11-08
+
+收窄适用范围，只面向 WorkBuddy + DeepSeek。
+
+### 移除
+
+- `references/standards/mobile.md`：ArkTS / 鸿蒙方向不再使用
+- 检查清单里的「移动端」一节，报告模板中的移动端选项
+- 与特定客户端绑定的安装路径与调用语法，只保留 WorkBuddy 的 `~/.workbuddy/skills`
+
+### 说明
+
+- 明确声明适用环境为 WorkBuddy + DeepSeek，不再兼容其他客户端的目录约定
+- 来源仓库已获作者授权
+
 ## 0.3.0 — 2026-11-08
 
 解决两个上手问题：**第一次怎么开始**、**第二天怎么接上**。
@@ -25,7 +40,7 @@
 ### 新增
 
 - `references/standards/` 标准层五份：`shared.md`、`frontend.md`、`backend-agent.md`、`mobile.md`、`examples.md`
-- `references/checklists.md` 八段清单：开始前、方案、实现、前端、后端、Agent、移动端、完成前
+- `references/checklists.md` 七段清单：开始前、方案、实现、前端、后端、Agent、完成前
 - `references/report-template.md` 完成报告模板，强制区分「通过 / 失败 / 未运行」
 - `scripts/write-worklog.ps1` 追加操作日志，阻止路径逃出项目根目录
 - `scripts/verify-frontend.ps1` 按锁文件识别包管理器，跑格式、Lint、类型、测试、构建
@@ -42,7 +57,7 @@
 
 ### 移除
 
-- 与 Codex 绑定的路径与调用语法；`agents/openai.yaml` 不再携带
+- 与特定客户端绑定的路径与调用语法；`agents/openai.yaml` 不再携带
 - 前后端示例合并为 `standards/examples.md`
 
 ## 0.1.0 — 2026-11-07
